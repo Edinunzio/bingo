@@ -40,3 +40,27 @@
 .read-the-docs {
   color: #888;
 }
+
+
+/* My styles begin */
+
+.square {
+  background: #fff;
+  border: 1px solid #999;
+  float: left;
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 34px;
+  height: 100px;
+  margin-right: -1px;
+  margin-top: -1px;
+  padding: 0;
+  text-align: center;
+  width: 100px;
+}
+
+.board td{
+  border: 1px solid black;
+  height: 100px;
+  width: 100px;
+}
