@@ -26,7 +26,15 @@ function Board({ boardWords }) {
                 <div className="board-row" key={rowIndex}>
                     {[...Array(5)].map((_, colIndex) => {
                         const squareIndex = rowIndex * 5 + colIndex;
-                        const text = squareIndex === 12 ? "FREE SPACE" : boardWords[squareIndex] || "-";
+                        let text;
+
+                        if (squareIndex === 12) {
+                            text = "FREE SPACE";
+                        } else {
+                            const adjustedIndex = squareIndex > 12 ? squareIndex - 1 : squareIndex;
+                            text = boardWords[adjustedIndex] || "-";
+                        }
+
                         return <Square key={squareIndex} text={text} />;
                     })}
                 </div>
@@ -35,28 +43,9 @@ function Board({ boardWords }) {
     );
 }
 
-function GenerateBoard({ onGenerateBoardClick }) {
-    return (
-        <button type='button' onClick={() => onGenerateBoardClick()}>Generate Board</button>
-    );
-}
-
-
 function Game() {
     const [wordBank, setWordBank] = useState([]);
     const [inputValue, setInputValue] = useState("");
-
-    function handleClick(event) {
-        if (wordBank.length === 24){
-            event?.preventDefault();
-            const firstHalf = wordBank.slice(0, 12);
-            const secondHalf = wordBank.slice(12);
-
-            // future randomizer here
-            const newBoardWords = [...firstHalf, "FREE SPACE", ...secondHalf];
-            setWordBank(newBoardWords);
-        }
-    }
 
     function addWord(event) {
         if (wordBank.length < 24 && inputValue.trim()){
@@ -80,7 +69,6 @@ function Game() {
             onWordInputClick={addWord}
         />
        </div>
-       <GenerateBoard onGenerateBoardClick={handleClick} />
 
        <div className='word-bank'>
             <h2>Word Bank</h2>
@@ -93,32 +81,5 @@ function Game() {
     </>
   )
 }
-
-const WORDS = [
-    "Apple",
-    "Banana",
-    "Orange",
-    "Mango",
-    "Grapes",
-    "Strawberry",
-    "Pineapple",
-    "Blueberry",
-    "Watermelon",
-    "Peach",
-    "Pear",
-    "Cherry",
-    "Kiwi",
-    "Lemon",
-    "Lime",
-    "Papaya",
-    "Plum",
-    "Pomegranate",
-    "Raspberry",
-    "Blackberry",
-    "Cantaloupe",
-    "Dragonfruit",
-    "Guava",
-    "Passionfruit"
-  ];
 
 export default Game
