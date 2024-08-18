@@ -1,93 +1,48 @@
 import { useState } from 'react'
 
-function WordInput({onWordBankChange, wordBank, onWordInputClick}) {
-        if (wordBank.length < 24){
-            return (
+function WordInput({onWordInputChange, inputValue, onWordInputClick}) {
+    return (
         <>
             <input
                 className="word"
                 type="text"
-                value={wordBank}
-                onChange={(e) => onWordBankChange(e.target.value)}
+                value={inputValue}
+                onChange={(e) => onWordInputChange(e.target.value)}
                 placeholder="Enter a word for a bingo tile." 
             />
             <button type='button' onClick={() => onWordInputClick()}>Add word</button>
-        </>)}
-        else {
-            return (
-                <>
-                <div className='word-bank'>
-                    <ul>
-                    {wordBank.map((word) => {
-                        return <li key={word}>{word}</li>;
-                        })}
-                    </ul>
-                </div>
-                </>
-            )
-        }
-    
+        </>
+    );
 }
 
 function Square({text}) {
-
-    return <button className="square">{text}</button>
+    return <button className="square">{text}</button>;
 }
 
 function Board({ boardWords }) {
-    if (boardWords.length < 25){
-        return (
-            <>
+    return (
         <div className='board'>
-        {[...Array(5)].map((_, rowIndex) => (
-            <div className="board-row" key={rowIndex}>
-            {[...Array(5)].map((_, colIndex) => {
-                const squareIndex = rowIndex * 5 + colIndex;
-                const text = squareIndex === 12 ? "FREE SPACE" : "-";
-                return (
-                <Square key={squareIndex} text={text} />
-                );
-            })}
-            </div>
-        ))}
+            {[...Array(5)].map((_, rowIndex) => (
+                <div className="board-row" key={rowIndex}>
+                    {[...Array(5)].map((_, colIndex) => {
+                        const squareIndex = rowIndex * 5 + colIndex;
+                        const text = squareIndex === 12 ? "FREE SPACE" : boardWords[squareIndex] || "-";
+                        return <Square key={squareIndex} text={text} />;
+                    })}
+                </div>
+            ))}
         </div>
-        </>
-        )
-    } else {
-        return (
-            <>
-        <div className='board'>
-        {[...Array(5)].map((_, rowIndex) => (
-            <div className="board-row" key={rowIndex}>
-            {[...Array(5)].map((_, colIndex) => {
-                const squareIndex = rowIndex * 5 + colIndex;
-                const text = squareIndex === 12 ? "FREE SPACE" : boardWords[squareIndex];
-                return (
-                <Square key={squareIndex} text={text} />
-                );
-            })}
-            </div>
-        ))}
-        </div>
-        </>
-        )
-    }
+    );
 }
 
 function GenerateBoard({ onGenerateBoardClick }) {
     return (
-        <>
-        <form>
-            <button type='button' onClick={() => onGenerateBoardClick()}>Generate Board</button>
-        </form>
-        </>
-    )
+        <button type='button' onClick={() => onGenerateBoardClick()}>Generate Board</button>
+    );
 }
 
 
 function Game() {
-    //const [wordBank, setWordBank] = useState(WORDS);
-    //const [boardWords, setBoardWords] = useState(Array(25).fill("-"));
     const [wordBank, setWordBank] = useState([]);
     const [inputValue, setInputValue] = useState("");
 
@@ -104,10 +59,8 @@ function Game() {
     }
 
     function addWord(event) {
-        if (wordBank.length < 24){
+        if (wordBank.length < 24 && inputValue.trim()){
             event?.preventDefault();
-            let prevWordBank = wordBank;
-            console.log(prevWordBank);
 
             // future randomizer here
             setWordBank(prevWordBank => [...prevWordBank, inputValue.trim()]);
@@ -122,12 +75,21 @@ function Game() {
       <div className='window'>
         <Board boardWords={wordBank} />
         <WordInput
-            wordBank={wordBank}
-            onWordBankChange={setWordBank}
-            onWordInputClick={() => addWord()}
+            inputValue={inputValue}
+            onWordInputChange={setInputValue}
+            onWordInputClick={addWord}
         />
        </div>
-       <GenerateBoard onGenerateBoardClick={() => handleClick()} />
+       <GenerateBoard onGenerateBoardClick={handleClick} />
+
+       <div className='word-bank'>
+            <h2>Word Bank</h2>
+            <ul>
+                {wordBank.map((word, index) => (
+                    <li key={index}>{word}</li>
+                ))}
+            </ul>
+        </div>
     </>
   )
 }
