@@ -1,7 +1,6 @@
 import { useState } from 'react'
 
 function WordInput({onWordBankChange, wordBank, onWordInputClick}) {
-
         if (wordBank.length < 24){
             return (
         <>
@@ -90,7 +89,7 @@ function Game() {
     //const [wordBank, setWordBank] = useState(WORDS);
     //const [boardWords, setBoardWords] = useState(Array(25).fill("-"));
     const [wordBank, setWordBank] = useState([]);
-    //const [inputValue, setInputValue] = useState("");
+    const [inputValue, setInputValue] = useState("");
 
     function handleClick(event) {
         if (wordBank.length === 24){
@@ -104,21 +103,22 @@ function Game() {
         }
     }
 
-    function addWord(event, newWord) {
+    function addWord(event) {
         if (wordBank.length < 24){
             event?.preventDefault();
             let prevWordBank = wordBank;
             console.log(prevWordBank);
 
             // future randomizer here
-            setWordBank(prevWordBank => [...prevWordBank, newWord]);
-            //setInputValue("");
+            setWordBank(prevWordBank => [...prevWordBank, inputValue.trim()]);
+            setInputValue("");
         }
     }
 
   return (
     <>
       <h1>My Custom Bingo Board</h1>
+      
       <div className='window'>
         <Board boardWords={wordBank} />
         <WordInput
