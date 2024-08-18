@@ -3,6 +3,7 @@
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+  width: 90%;
 }
 
 .logo {
@@ -60,6 +61,10 @@
   border-radius: 0;
 }
 
-.window {
+.game-container {
   display: flex;
+}
+
+.window button:hover {
+  border-color: rgb(240 253 250 / var(--tw-border-opacity));
 }
